@@ -1,0 +1,37 @@
+{
+  "name": "deep-link.js",
+  "main": "build/deep-link.min.js",
+  "version": "0.1.1",
+  "authors": [
+    {
+      "name": "Tim Severien",
+      "email": "timseverien@gmail.com",
+      "url": "http://timseverien.com"
+    }
+  ],
+  "description": "A tool designer for mobile deep links",
+  "keywords": [
+    "mobile",
+    "deep",
+    "link",
+    "app"
+  ],
+  "license": "MIT",
+  "homepage": "https://timseverien.com/projects/deep-link",
+  "ignore": [
+    "node_modules"
+  ],
+  "dependencies": {
+    "visibly.js": "~0.1.0"
+  },
+  "_release": "0.1.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.1",
+    "commit": "ba2cefd95b912beb75c1009da1d605be460e584e"
+  },
+  "_source": "git://github.com/timseverien/deep-link.js.git",
+  "_target": "~0.1.1",
+  "_originalSource": "deep-link.js",
+  "_direct": true
+}

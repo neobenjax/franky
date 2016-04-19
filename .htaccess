@@ -1,0 +1,53 @@
+### VALIDACION PARA PREVENIR QUE SE ROMPA SI NO HAY SOPORTE PARA MOD_REWRITE
+<IfModule mod_rewrite.c>
+RewriteEngine On
+#ErrorDocument 404 /home/404
+#RewriteCond %{HTTPS} !on
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+
+RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [OR]
+
+RewriteCond %{QUERY_STRING} .*script.* [NC,OR]
+
+RewriteCond %{QUERY_STRING} .*iframe.* [NC,OR]
+
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+
+RewriteCond %{QUERY_STRING} ^.*(;|<|>|'|"|\)|%0A|%0D|%22|%27|%3C|%3E|%00).*(/\*|union|select|insert|cast|set|declare|drop|update|md5|benchmark).* [NC,OR]
+
+#RewriteRule .*  https://www.dominiofinal.mx/404? [R=301,L]
+
+
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+
+RewriteRule .* – [F]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([\w-]+)$ index.php?pagina=$1 [L]
+RewriteRule ^([\w-]+)/([\w-]+)$ index.php?pagina=$1&subpagina=$2 [L]
+RewriteRule ^([\w-]+)/([\w-]+)/([\w-]+)$ index.php?pagina=$1&subpagina=$2&categoria=$3 [L]
+RewriteRule ^([\w-]+)/([\w-]+)/([\w-]+)/([\w-]+)$ index.php?pagina=$1&subpagina=$2&categoria=$3&producto=$4 [L]
+
+#RewriteRule ^([\w-]+)/([\w-]+)/([\w-]+)/([\w-]+)/([\w-]+)$ index.php?pagina=$1&subpagina=$2&categoria=$3&id_producto=$4&nombre_producto=$5 [L]
+
+#htaccess para rutas que terminan en /
+
+RewriteRule ^([\w-]+)/$ index.php?pagina=$1 [L]
+RewriteRule ^([\w-]+)/([\w-]+)/$ index.php?pagina=$1&subpagina=$2 [L]
+RewriteRule ^([\w-]+)/([\w-]+)/([\w-]+)/$ index.php?pagina=$1&subpagina=$2&categoria=$3 [L]
+RewriteRule ^([\w-]+)/([\w-]+)/([\w-]+)/([\w-]+)/$ index.php?pagina=$1&subpagina=$2&categoria=$3&producto=$4 [L]
+
+
+#RewriteRule ^([\w-]+)/([\w-]+)-([\w-]+)$ index.php?pagina=$1&subpagina=$2&categoria=$3 [L] #Variante de regla con - 
+
+
+### IMPORTANTE VAYA DESPUES DE LAS DEMAS REGLAS
+### MEJOR REDIRECT A 404 que ERROR DOCUMENT
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule .* 404.php [L]
+</IfModule>

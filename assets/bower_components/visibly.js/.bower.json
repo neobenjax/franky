@@ -1,0 +1,33 @@
+{
+  "name": "visibly.js",
+  "main": "visibly.js",
+  "version": "0.1.1",
+  "homepage": "https://github.com/addyosmani/visibly.js",
+  "authors": [
+    "Addy Osmani <addyosmani@gmail.com>"
+  ],
+  "description": "A cross-browser Page Visibility API shim",
+  "keywords": [
+    "visibility",
+    "page-visibility",
+    "visible",
+    "polyfill"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.1.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.1",
+    "commit": "eef184c1519b4f6b8d1a5173600d03d8f617bbaa"
+  },
+  "_source": "git://github.com/addyosmani/visibly.js.git",
+  "_target": "~0.1.0",
+  "_originalSource": "visibly.js"
+}
