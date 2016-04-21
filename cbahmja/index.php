@@ -18,7 +18,7 @@ if (isset($_SESSION['LAST_ACTIVITY2']) && (time() - $_SESSION['LAST_ACTIVITY2'] 
 $_SESSION['LAST_ACTIVITY2'] = time();
 
 ob_start();
-error_reporting(0);
+//error_reporting(0);
 
 header('X-Frame-Options: DENY');
 header('X-XSS-Protection: 1; mode=block');
@@ -27,6 +27,8 @@ header('X-Content-Type-Options: nosniff');
 
 require 'includes/start.php';
 $baseURL = $helpers->getURL();
+$_GET['section']    = htmlspecialchars($_GET['section'], ENT_QUOTES, 'UTF-8');
+$_GET['contenido']  = (isset($_GET['contenido']) && $_GET['contenido'] != '') ? htmlspecialchars($_GET['contenido'], ENT_QUOTES, 'UTF-8') : 0;
 
 
     if (empty($_SESSION['id']))
@@ -35,17 +37,6 @@ $baseURL = $helpers->getURL();
         echo '<script>window.location = "'.$url.'";</script>';
     }
 
-    if(isset($_GET['section']) && $_GET['section'] != 'listado-fondos')
-    {
-      unset($_SESSION['filtro1']);
-      setcookie('currentPage', '', time()-300);
-    }
-
-    if(isset($_GET['section']) && $_GET['section'] != 'galeria-antojos')
-    {
-      unset($_SESSION['filtro1A']);
-      setcookie('currentPageAnt', '', time()-300);
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -119,164 +110,19 @@ $baseURL = $helpers->getURL();
                   <p class="centered"><a href="profile.html"><img src="http://codice.com/img/logo_codice.png" class="img-square" width="100"></a></p>
                   <h5 class="centered">Menú</h5>
 
-                  <?php if ($helpers->tienePermiso('alta-administrador')==1) { ?>
+                  <?php if ($helpers->tienePermiso('alta-xxx')==1) { ?>
                     <li class="sub-menu">
                         <a class="active" href="javascript:;" >
                             <i class="fa fa-book"></i>
-                            <span>Administradores</span>
+                            <span>XXX</span>
                         </a>
                         <ul class="sub">
-                            <li class="active"><a  href="<?php echo $baseURL;?>section/alta-administrador">Alta de Administrador</a></li>
+                            <li class="active"><a  href="<?php echo $baseURL;?>section/alta-XXX">Alta de XXX</a></li>
                         </ul>
                         <ul class="sub">
-                            <li class="active"><a  href="<?php echo $baseURL;?>section/listado-administrador">Listado de Administradores</a></li>
+                            <li class="active"><a  href="<?php echo $baseURL;?>section/listado-XXX">Listado de XXX</a></li>
                         </ul>
                     </li >
-                  <?php } ?>
-
-                  <?php if ($helpers->tienePermiso('contenido-foodies')==1) { ?>
-                  <li class="sub-menu">
-                      <a class="active" href="javascript:;" >
-                          <i class="fa fa-book"></i>
-                          <span>Configuración</span>
-                      </a>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/contenido-foodies">Contenido Foodies</a></li>
-                      </ul>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/editar-terminos">Términos y Condiciones</a></li>
-                      </ul>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/editar-aviso">Aviso de Privacidad</a></li>
-                      </ul>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/editar-porque" style="line-height:20px;height:40px">¿Por qué hacemos este blog?</a></li>
-                      </ul>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/orden-home">Orden Post Home</a></li>
-                      </ul>
-                  </li>
-                  <?php } ?>
-                  <?php if ($helpers->tienePermiso('alta-usuarios')==1) { ?>
-                  <li class="sub-menu">
-                      <a class="active" href="javascript:;" >
-                          <i class="fa fa-book"></i>
-                          <span>Usuarios</span>
-                      </a>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/alta-usuarios">Alta de Usuarios</a></li>
-                      </ul>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/listado-usuarios">Listado de Usuarios</a></li>
-                      </ul>
-                  </li>
-                  <?php } ?>
-                  <?php if ($helpers->tienePermiso('alta-categoria')==1) { ?>
-                  <li class="sub-menu">
-                      <a class="active" href="javascript:;" >
-                          <i class="fa fa-book"></i>
-                          <span>Categorías</span>
-                      </a>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/alta-categoria">Alta de Categorías</a></li>
-                      </ul>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/listado-categoria">Listado de Categorías</a></li>
-                      </ul>
-                  </li >
-                  <?php } ?>
-                  <?php if ($helpers->tienePermiso('alta-blogs')==1) { ?>
-                  <li class="sub-menu">
-                      <a class="active" href="javascript:;" >
-                          <i class="fa fa-book"></i>
-                          <span>Post</span>
-                      </a>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/alta-blogs">Alta de Post</a></li>
-                      </ul>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/listado-blogs">Listado de Posts</a></li>
-                      </ul>
-                  </li>
-                  <?php } ?>
-                  <?php if ($helpers->tienePermiso('alta-feature')==1) { ?>
-                  <li class="sub-menu">
-                      <a class="active" href="javascript:;" >
-                          <i class="fa fa-book"></i>
-                          <span>Featured Post</span>
-                      </a>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/alta-feature">Alta de Featured Post</a></li>
-                      </ul>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/listado-feature">Listado de Featured Posts</a></li>
-                      </ul>
-                  </li>
-                  <?php } ?>
-                  <?php if ($helpers->tienePermiso('alta-foodies')==1) { ?>
-                  <li class="sub-menu">
-                      <a class="active" href="javascript:;" >
-                          <i class="fa fa-book"></i>
-                          <span>Foodies</span>
-                      </a>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/alta-foodies">Alta de Foodies</a></li>
-                      </ul>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/listado-foodies">Listado de Foodies</a></li>
-                      </ul>
-                  </li>
-                  <?php } ?>
-                  <?php if ($helpers->tienePermiso('listado-comentarios')==1) { ?>
-                  <li class="sub-menu">
-                      <a class="active" href="javascript:;" >
-                          <i class="fa fa-book"></i>
-                          <span>Comentarios</span>
-                      </a>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/listado-comentarios">Listado de Comentarios</a></li>
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/listado-comentarios-featured" style="line-height:20px;height:40px">Listado de Comentarios de Featured</a></li>
-                      </ul>
-                  </li>
-                  <?php } ?>
-                  <?php if ($helpers->tienePermiso('alta-fondos')==1) { ?>
-                  <li class="sub-menu">
-                      <a class="active" href="javascript:;" >
-                          <i class="fa fa-book"></i>
-                          <span>Fondos</span>
-                      </a>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/alta-fondos">Alta de Fondos</a></li>
-                      </ul>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/listado-fondos">Listado de Fondos</a></li>
-                      </ul>
-                  </li>
-                  <?php }?>
-                  <?php if ($helpers->tienePermiso('alta-antojos')==1) { ?>
-                  <li class="sub-menu">
-                      <a class="active" href="javascript:;" >
-                          <i class="fa fa-book"></i>
-                          <span>Antojos</span>
-                      </a>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/alta-antojos">Alta de Antojos</a></li>
-                      </ul>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/listado-antojos">Listado Antojos</a></li>
-                      </ul>
-                  </li>
-                  <?php } ?>
-                  <?php if ($_SESSION['rol']!=1) { ?>
-                  <li class="sub-menu">
-                      <a class="active" href="javascript:;" >
-                          <i class="fa fa-book"></i>
-                          <span>Password</span>
-                      </a>
-                      <ul class="sub">
-                          <li class="active"><a  href="<?php echo $baseURL;?>section/editar-password">Editar Password</a></li>
-                      </ul>
-                  </li>
                   <?php } ?>
               </ul>
               <!-- sidebar menu end-->
@@ -295,7 +141,7 @@ $baseURL = $helpers->getURL();
 
             <?php
 
-                  if ($helpers->tienePermiso($_GET['section'])==1 || $_GET['section'] == 'index' || $_GET['section']=='editar-password')
+                  if ($helpers->tienePermiso($_GET['section'])==1 || $_GET['section'] == 'index')
                     require $helpers->getView($_GET['section']);
                   else
                     header("Location: ".$baseURL."section/index");
@@ -308,7 +154,7 @@ $baseURL = $helpers->getURL();
       <!--footer start-->
       <footer class="site-footer">
           <div class="text-center">
-              2015 - <?php echo $company;?>
+              2016 - <?php echo $company;?>
               <a href="/section/index#" class="go-top">
                   <i class="fa fa-angle-up"></i>
               </a>

@@ -143,8 +143,8 @@ function getURL()
     var host = window.location.protocol + '//' + window.location.host;
     var path = window.location.pathname;
 
-    if(path.indexOf("StaClara") > -1)
-        host += '/StaClara';     
+    if(path.indexOf("XXX") > -1)
+        host += '/XXX';     
       
     host += '/cbahmja/';
 

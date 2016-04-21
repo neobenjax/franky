@@ -54,6 +54,36 @@ class Helpers
         return 'assets/js/app/'.$jsSan.'.js';
     }
 
+       public function getURL()
+    {
+        # Protocolo
+        # HTTP
+        $httpVar    = $_SERVER['REQUEST_SCHEME'].'://';
+        $dominio    = $_SERVER['HTTP_HOST'];
+        $directorio = dirname($_SERVER['PHP_SELF']).'/';
+
+        if(!isset($_SERVER['REQUEST_SCHEME']))
+        {
+            if($directorio=='//')
+            {
+                $directorio="/";
+            }
+            # Implementación en Sitios sin  REQUEST SCHEME
+            return htmlspecialchars($directorio, ENT_QUOTES, 'UTF-8');
+        }
+        else
+        {
+            return htmlspecialchars($httpVar.$dominio.$directorio, ENT_QUOTES, 'UTF-8');
+        }
+
+       /* if (!isset($_SERVER["SERVER_PROTOCOL"]))
+          $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,strpos( $_SERVER["SERVER_PROTOCOL"],'/'))).'://';
+        else
+          $protocol = 'http://';
+
+        return $protocol.$_SERVER['SERVER_NAME'].DIRECTORIO;*/
+    }
+
   public function checkUser($uid, $oauth_provider, $username,$email,$twitter_otoken,$twitter_otoken_secret)
   {
     if ($email != '')

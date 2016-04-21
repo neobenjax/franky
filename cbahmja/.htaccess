@@ -29,8 +29,8 @@ RewriteRule ^section/([\w-]+)/?$ index.php?section=$1  [L]
 RewriteRule ^section/([\w-]+)/([\w-]+)?$ index.php?section=$1&contenido=$2 [L]
 
 
-#RewriteRule ^section/([^/]*)$ /StaClara/cbahmja/index.php?section=$1 [L]
-#RewriteRule ^section/([^/]*)/([^/]*)$ /StaClara/cbahmja/index.php?section=$1&contenido=$2 [L]
+#RewriteRule ^section/([^/]*)$ /adminProgra/cbahmja/index.php?section=$1 [L]
+#RewriteRule ^section/([^/]*)/([^/]*)$ /adminProgra/cbahmja/index.php?section=$1&contenido=$2 [L]
 
 
 ### IMPORTANTE VAYA DESPUES DE LAS DEMAS REGLAS

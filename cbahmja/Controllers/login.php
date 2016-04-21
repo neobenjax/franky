@@ -1,5 +1,6 @@
 <?php
 $style = "display:none";
+
 if (isset($_POST['user']) && $_POST['user']!= '' && isset($_POST['pass']) && $_POST['pass']!= '')
 {
 
@@ -59,12 +60,12 @@ if (isset($_POST['user']) && $_POST['user']!= '' && isset($_POST['pass']) && $_P
 				$_SESSION['id'] 	= 'admin';
 				$_SESSION['rol']  = $login['id_rol'];
 				$_SESSION['user_cms'] = $_POST['user'];
-				$temp 					  = $helpers->getDataArray('tbl_permisos',array());
+				/*$temp 					  = $helpers->getDataArray('tbl_permisos',array());
 				$permisos 				= array();
 
 				for($i=0,$n=count($temp);$i<$n;$i++)
 					$permisos[$temp[$i]['seccion']] = $temp[$i]['id_rol'];
-
+*/
 				$consulta = "UPDATE tbl_admin SET intentos = 0 WHERE usuario = :user";
 
 				$params = array();
