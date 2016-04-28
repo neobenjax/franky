@@ -84,6 +84,30 @@ class Helpers
         return $protocol.$_SERVER['SERVER_NAME'].DIRECTORIO;*/
     }
 
+  public function getData($table,$where)
+  {
+     $datas = $this->database->select($table,'*',$where);
+     $info = array();
+
+     foreach ($datas as $data) {
+         $info = $data;
+     }
+     return $info;
+  }
+
+  public function getDataArray($table,$where)
+  {
+     $datas = $this->database->select($table,'*',$where);
+     return $datas;
+  }
+
+  public function getQuery($query)
+  {
+     $datas = $this->database->query($query)->fetchAll(PDO::FETCH_ASSOC);
+
+     return $datas;
+  }
+
   public function checkUser($uid, $oauth_provider, $username,$email,$twitter_otoken,$twitter_otoken_secret)
   {
     if ($email != '')

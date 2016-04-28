@@ -60,22 +60,13 @@ if (isset($_POST['user']) && $_POST['user']!= '' && isset($_POST['pass']) && $_P
 				$_SESSION['id'] 	= 'admin';
 				$_SESSION['rol']  = $login['id_rol'];
 				$_SESSION['user_cms'] = $_POST['user'];
-				/*$temp 					  = $helpers->getDataArray('tbl_permisos',array());
-				$permisos 				= array();
 
-				for($i=0,$n=count($temp);$i<$n;$i++)
-					$permisos[$temp[$i]['seccion']] = $temp[$i]['id_rol'];
-*/
 				$consulta = "UPDATE tbl_admin SET intentos = 0 WHERE usuario = :user";
 
 				$params = array();
 				$params[0] = array('id'=>'user', 'content'=>$_POST['user'],'tipo'=>PDO::PARAM_STR,'size'=>60);
 
 			    $helpers->updateDataSanitize($consulta,$params);
-
-
-				//$helpers->database->query("UPDATE tbl_admin SET intentos = 0 WHERE usuario = '".$_POST['user']."'")->fetchAll();
-				$_SESSION['permisos'] = $permisos;
 
 				session_set_cookie_params(0, NULL, NULL, isset($_SERVER["HTTPS"]), TRUE); 
 				session_regenerate_id(true);

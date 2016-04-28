@@ -18,7 +18,7 @@ if (isset($_SESSION['LAST_ACTIVITY2']) && (time() - $_SESSION['LAST_ACTIVITY2'] 
 $_SESSION['LAST_ACTIVITY2'] = time();
 
 ob_start();
-//error_reporting(0);
+error_reporting(0);
 
 header('X-Frame-Options: DENY');
 header('X-XSS-Protection: 1; mode=block');
@@ -110,20 +110,43 @@ $_GET['contenido']  = (isset($_GET['contenido']) && $_GET['contenido'] != '') ? 
                   <p class="centered"><a href="profile.html"><img src="http://codice.com/img/logo_codice.png" class="img-square" width="100"></a></p>
                   <h5 class="centered">Menú</h5>
 
-                  <?php if ($helpers->tienePermiso('alta-xxx')==1) { ?>
                     <li class="sub-menu">
                         <a class="active" href="javascript:;" >
                             <i class="fa fa-book"></i>
-                            <span>XXX</span>
+                            <span>Clientes</span>
                         </a>
                         <ul class="sub">
-                            <li class="active"><a  href="<?php echo $baseURL;?>section/alta-XXX">Alta de XXX</a></li>
+                            <li class="active"><a  href="<?php echo $baseURL;?>section/alta-cliente">Alta de Clientes</a></li>
                         </ul>
                         <ul class="sub">
-                            <li class="active"><a  href="<?php echo $baseURL;?>section/listado-XXX">Listado de XXX</a></li>
+                            <li class="active"><a  href="<?php echo $baseURL;?>section/listado-clientes">Listado de Clientes</a></li>
                         </ul>
                     </li >
-                  <?php } ?>
+
+                    <li class="sub-menu">
+                        <a class="active" href="javascript:;" >
+                            <i class="fa fa-book"></i>
+                            <span>Proyectos</span>
+                        </a>
+                        <ul class="sub">
+                            <li class="active"><a  href="<?php echo $baseURL;?>section/alta-proyecto">Alta de Proyecto</a></li>
+                        </ul>
+                        <ul class="sub">
+                            <li class="active"><a  href="<?php echo $baseURL;?>section/listado-proyectos">Listado de Proyectos</a></li>
+                        </ul>
+                    </li >
+                    <li class="sub-menu">
+                        <a class="active" href="javascript:;" >
+                            <i class="fa fa-book"></i>
+                            <span>Actividades</span>
+                        </a>
+                        <ul class="sub">
+                            <li class="active"><a  href="<?php echo $baseURL;?>section/alta-actividad">Alta de Actividad</a></li>
+                        </ul>
+                        <ul class="sub">
+                            <li class="active"><a  href="<?php echo $baseURL;?>section/listado-actividades">Listado de Actividad</a></li>
+                        </ul>
+                    </li >
               </ul>
               <!-- sidebar menu end-->
           </div>
@@ -141,10 +164,7 @@ $_GET['contenido']  = (isset($_GET['contenido']) && $_GET['contenido'] != '') ? 
 
             <?php
 
-                  if ($helpers->tienePermiso($_GET['section'])==1 || $_GET['section'] == 'index')
-                    require $helpers->getView($_GET['section']);
-                  else
-                    header("Location: ".$baseURL."section/index");
+               require $helpers->getView($_GET['section']);
 
             ?>
 

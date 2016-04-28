@@ -15,6 +15,7 @@ error_reporting(0);
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link href="<?php echo $baseURL;?>cbahmja/assets/css/bootstrap.css" rel="stylesheet">
         <!-- Place favicon.ico in the root directory -->
 
 
@@ -50,7 +51,7 @@ error_reporting(0);
 
         ?>
         
-        <title>Franky</title>
+        <title>Sistema de programacion</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
 
