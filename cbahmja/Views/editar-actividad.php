@@ -90,6 +90,24 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label class="col-sm-2 col-sm-2 control-label">Gerente:</label>
+          <div class="col-sm-10">
+            <select class="form-control" name="gerencia" id="gerencia">
+              <option value="">Selecciona un gerente</option>
+              <?php for($i=0,$n=count($consultores);$i<$n;$i++) { 
+
+                  if ($consultores[$i]['etapa_id'] == 4){ 
+              ?>
+                    <option value="<?php echo $consultores[$i]['id']?>" <?php if($content['gerente'] == $consultores[$i]['id']) echo 'selected'; ?>><?php echo $consultores[$i]['consultor']?></option>
+              <?php 
+                  } 
+                }
+              ?>
+            </select>
+          </div>
+        </div>
+
         <div class="form-group last">
         <label class="control-label col-md-6"></label>
           <button type="submit" class="btn btn-theme04">

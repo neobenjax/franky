@@ -65,6 +65,16 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label class="col-sm-2 col-sm-2 control-label">Gerente:</label>
+          <div class="col-sm-10">
+            <select class="form-control" name="gerencia" id="gerencia">
+              <option selected="true" value="">Selecciona un gerente</option>
+                <?php $helpers->getOptionsWhere('tbl_consultor','consultor',array('AND'=>array('etapa_id'=>4,'status'=>1))); ?>
+            </select>
+          </div>
+        </div>
+
         <div class="form-group last">
         <label class="control-label col-md-6"></label>
           <button type="submit" class="btn btn-theme04">

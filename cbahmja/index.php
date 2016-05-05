@@ -147,6 +147,18 @@ $_GET['contenido']  = (isset($_GET['contenido']) && $_GET['contenido'] != '') ? 
                             <li class="active"><a  href="<?php echo $baseURL;?>section/listado-actividades">Listado de Actividad</a></li>
                         </ul>
                     </li >
+                    <li class="sub-menu">
+                        <a class="active" href="javascript:;" >
+                            <i class="fa fa-book"></i>
+                            <span>Actividades Fijas</span>
+                        </a>
+                        <ul class="sub">
+                            <li class="active"><a  href="<?php echo $baseURL;?>section/alta-actividad-fija">Alta de Actividad</a></li>
+                        </ul>
+                        <ul class="sub">
+                            <li class="active"><a  href="<?php echo $baseURL;?>section/listado-actividades-fijas">Listado de Actividad</a></li>
+                        </ul>
+                    </li >
               </ul>
               <!-- sidebar menu end-->
           </div>

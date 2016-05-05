@@ -13,6 +13,7 @@ if (isset($_POST['proyecto']) && $_POST['proyecto'] != '' && isset($_POST['activ
 	$_POST['html'] 			= (isset($_POST['html']) && $_POST['html']!= '') ? htmlspecialchars($_POST['html'], ENT_QUOTES, 'UTF-8') : 0;
 	$_POST['programacion'] 	= (isset($_POST['programacion']) && $_POST['programacion']!= '') ? htmlspecialchars($_POST['programacion'], ENT_QUOTES, 'UTF-8') : 0;
 	$_POST['calidad'] 		= (isset($_POST['calidad']) && $_POST['calidad']!= '') ? htmlspecialchars($_POST['calidad'], ENT_QUOTES, 'UTF-8') : 0;
+	$_POST['gerencia'] 		= (isset($_POST['gerencia']) && $_POST['gerencia']!= '') ? htmlspecialchars($_POST['gerencia'], ENT_QUOTES, 'UTF-8') : 0;
 
 	$campos 				= "proyecto_id, actividad, etapa_id";
 	$valor 					= ":proyecto, :actividad, :etapa";
@@ -35,6 +36,12 @@ if (isset($_POST['proyecto']) && $_POST['proyecto'] != '' && isset($_POST['activ
 		$valor 		.= ",:calidad"; 
 	}
 
+	if ($_POST['gerencia'] != '0')
+	{
+		$campos 	.= ",gerente";
+		$valor 		.= ",:gerencia"; 
+	}
+
 
 	$consulta = "INSERT INTO tbl_actividades ($campos) VALUES ($valor)";
 
@@ -51,6 +58,9 @@ if (isset($_POST['proyecto']) && $_POST['proyecto'] != '' && isset($_POST['activ
 
 	if ($_POST['calidad'] != '0')
 		$params[] = array('id'=>'calidad', 'content'=>$_POST['calidad'],'tipo'=>PDO::PARAM_INT,'size'=>11);
+
+	if ($_POST['gerencia'] != '0')
+		$params[] = array('id'=>'gerencia', 'content'=>$_POST['gerencia'],'tipo'=>PDO::PARAM_INT,'size'=>11);
 
 
     $id = $helpers->insertDataSanitize($consulta,$params);
