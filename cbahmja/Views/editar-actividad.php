@@ -14,7 +14,14 @@
           <div class="col-sm-10">
             <select name="proyecto"  class="form-control" id="proyecto">
               <option selected="true" value="">Selecciona un proyecto</option>
-              <?php $helpers->getOptionsSelect('tbl_proyectos','proyecto',$content['proyecto_id']); ?>
+              <?php for($i=0,$n=count($proyectos);$i<$n;$i++) { 
+
+              ?>
+                    <option value="<?php echo $proyectos[$i]['id']?>" <?php if($content['proyecto_id'] == $proyectos[$i]['id']) echo 'selected'; ?>><?php echo $proyectos[$i]['proyecto'].' - '.$proyectos[$i]['cliente'];?></option>
+              <?php 
+                
+                }
+              ?>
             </select>
           </div>
         </div>

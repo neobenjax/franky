@@ -2,6 +2,12 @@
 
 $style = 'none';
 
+	$prepare   = 'SELECT p.*, c.cliente FROM tbl_proyectos as p LEFT JOIN tbl_clientes as c on (c.id = p.cliente_id)';
+	$params	   = array();
+	$tipoFetch = 'fetchAll';
+
+    $proyectos = $helpers->getDataSanitize($prepare,$params,$tipoFetch);
+
 if (isset($_POST['proyecto']) && $_POST['proyecto'] != '' && isset($_POST['actividad']) && $_POST['actividad'] != '' && isset($_POST['etapa']) && $_POST['etapa'] != '')
 {
 

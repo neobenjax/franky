@@ -13,7 +13,14 @@
           <div class="col-sm-10">
             <select class="form-control" name="proyecto" id="proyecto" required>
               <option selected="true" value="">Selecciona un proyecto</option>
-                <?php $helpers->getOptionsWhere('tbl_proyectos','proyecto',array()); ?>
+                <?php 
+
+                  for($i=0,$n=count($proyectos);$i<$n;$i++)
+                  {
+                    echo '<option value="'.$proyectos[$i]['id'].'">'.$proyectos[$i]['proyecto'].' - '.$proyectos[$i]['cliente'].'</option>';
+                  }
+
+                ?>
             </select>
           </div>
         </div>

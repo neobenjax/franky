@@ -2,6 +2,7 @@
   <div class="col-md-12">
       <div class="content-panel">
 
+      <?php if (count($actividadesFijas)>0) { ?>
           <h4>Actividades Fijas </h4>
 
           <table class="table table-striped table-advance table-hover">
@@ -40,6 +41,8 @@
           </table>
 
           <br>
+
+      <?php } ?>
 
           <h4>Actividades <?php echo date("d-m-Y");?></h4><hr>
 
