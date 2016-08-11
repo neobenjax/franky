@@ -31,10 +31,12 @@ error_reporting(0);
 
         //Variables de directorios
         $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        $directorio = str_replace("/","",dirname($_SERVER["PHP_SELF"]));
-        $directorio = ($directorio!='')?$directorio.'/':'';
-        $path = "http://$_SERVER[HTTP_HOST]/";
+        $directorio = dirname($_SERVER["PHP_SELF"]);
+        $directorio =($directorio!='')?$directorio:'/';
+        $path = "http://$_SERVER[HTTP_HOST]";
         $fullPath = $path.$directorio;
+        $fullPath = ($fullPath[strlen($fullPath)-1]=='/')?$fullPath:$fullPath.'/';
+        
         $_SESSION['fullPath'] = $fullPath;       
 
 
