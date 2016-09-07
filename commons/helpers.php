@@ -43,7 +43,7 @@ public function getController($controller)
 {
   $controller = filter_var($controller, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
   if(file_exists('Controllers/'.$controller.'.php'))
-    include_once '../Controllers/'.$controller.'.php';
+    include_once 'Controllers/'.$controller.'.php';
 }
 
 public function getJs($librerias, $js, $seccion)

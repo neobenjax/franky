@@ -62,7 +62,6 @@ include_once 'includes/init.php';
 
 
         <?php 
-        echo $pollo;
             //Librerias para el footer
             if(isset($libreriasFooter))
                 $helpers->getJs($libreriasFooter,$pagina,$subpagina);
