@@ -42,7 +42,8 @@ public function getView($view)
 public function getController($controller)
 {
   $controller = filter_var($controller, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
-  return 'Controllers/'.$controller.'.php';
+  if(file_exists('Controllers/'.$controller.'.php'))
+    include_once '../Controllers/'.$controller.'.php';
 }
 
 public function getJs($librerias, $js, $seccion)

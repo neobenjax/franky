@@ -1,6 +1,6 @@
 <?php
+include_once 'includes/error_security.php';
 include_once 'includes/init.php';
-include_once $helpers->getController($pagina);
 ?>
 <!doctype html>
 <html class="no-js" lang="es" ng-app="app">
@@ -47,25 +47,6 @@ include_once $helpers->getController($pagina);
         include_once 'includes/analytics.php'; 
         ?>
 
-        <?php
-        //Variables de reasignación para home_marca/categoria/nombre-de-producto
-        if(4==5){
-        ?>
-        <div>
-            <span class="green">Link Actual: <?php echo $actual_link; ?></span>
-            <br>
-            <span class="green">Página: <?php echo $pagina; ?></span>
-            <br>
-            <span class="green">Subpagina: <?php echo $subpagina; ?></span>
-            <br>
-            <span class="green">Categoria: <?php echo $categoria; ?></span>
-            <br>
-            <span class="green">Producto: <?php echo $producto; ?></span>
-        </div>
-        <?php
-        }
-        ?>
-
         <div class="contenedor-all">
             <div class="desplazamiento">
                   <?php
@@ -81,6 +62,7 @@ include_once $helpers->getController($pagina);
 
 
         <?php 
+        echo $pollo;
             //Librerias para el footer
             if(isset($libreriasFooter))
                 $helpers->getJs($libreriasFooter,$pagina,$subpagina);
