@@ -49,7 +49,7 @@ include_once $helpers->getController($pagina);
 
         <?php
         //Variables de reasignación para home_marca/categoria/nombre-de-producto
-        if(4==4){
+        if(4==5){
         ?>
         <div>
             <span class="green">Link Actual: <?php echo $actual_link; ?></span>
@@ -66,7 +66,7 @@ include_once $helpers->getController($pagina);
         }
         ?>
 
-        <div class="contenedorAll">
+        <div class="contenedor-all">
             <div class="desplazamiento">
                   <?php
                     # Menu
