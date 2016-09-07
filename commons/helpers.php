@@ -8,258 +8,256 @@ include_once 'base_facebook.php';
 class Helpers
 {
 
-   public $database;
+ public $database;
 
-  public function __construct()
-   {
+ public function __construct()
+ {
 
-        $this->database = new medoo(array(
-                       'database_type' => 'mysql',
-                       'database_name' => DATABASE_NAME,
-                       'server' => SERVER,
-                       'username' => USERNAME,
-                       'password' => PASSWORD,
-                       'charset' => 'utf8'
-                   ));
+  $this->database = new medoo(array(
+   'database_type' => 'mysql',
+   'database_name' => DATABASE_NAME,
+   'server' => SERVER,
+   'username' => USERNAME,
+   'password' => PASSWORD,
+   'charset' => 'utf8'
+   ));
 
-   }
+}
 
    # ---------------
    # HELPERS get
    # ---------------
-   public function getView($view)
-   {
-      $viewSan = filter_var($view, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
-      if(!file_exists('Views/'.$viewSan.'.php'))
-        $returnView = 'Views/404.php';
-      else
-        $returnView = 'Views/'.$viewSan.".php";
+public function getView($view)
+{
+  $viewSan = filter_var($view, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
+  if(!file_exists('Views/'.$viewSan.'.php'))
+    $returnView = 'Views/404.php';
+  else
+    $returnView = 'Views/'.$viewSan.".php";
 
-      return $returnView;
+  return $returnView;
 
-   }
+}
 
-   public function getController($controller)
-   {
-      $controller = filter_var($controller, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
-      return 'Controllers/'.$controller.'.php';
-   }
+public function getController($controller)
+{
+  $controller = filter_var($controller, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
+  return 'Controllers/'.$controller.'.php';
+}
 
-   public function getJs($js)
-    {
-      $jsSan = filter_var($js, FILTER_SANITIZE_STRING);
-        if ($jsSan == 'editar-xxxx')
-            $jsSan = 'alta-xxx';
+public function getJs($librerias, $js, $seccion)
+{
+  $jsSan = filter_var($js, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
+  $secSan = filter_var($seccion, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_HIGH);
+  $url = $this->getURL();
+  $returnJs = '';
 
-        return 'assets/js/app/'.$jsSan.'.js';
-    }
-
-       public function getURL()
-    {
-        # Protocolo
-        # HTTP
-        $httpVar    = $_SERVER['REQUEST_SCHEME'].'://';
-        $dominio    = $_SERVER['HTTP_HOST'];
-        $directorio = dirname($_SERVER['PHP_SELF']).'/';
-
-        if(!isset($_SERVER['REQUEST_SCHEME']))
-        {
-            if($directorio=='//')
-            {
-                $directorio="/";
-            }
-            # Implementación en Sitios sin  REQUEST SCHEME
-            return htmlspecialchars($directorio, ENT_QUOTES, 'UTF-8');
-        }
-        else
-        {
-            return htmlspecialchars($httpVar.$dominio.$directorio, ENT_QUOTES, 'UTF-8');
-        }
-
-       /* if (!isset($_SERVER["SERVER_PROTOCOL"]))
-          $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,strpos( $_SERVER["SERVER_PROTOCOL"],'/'))).'://';
-        else
-          $protocol = 'http://';
-
-        return $protocol.$_SERVER['SERVER_NAME'].DIRECTORIO;*/
-    }
-
-  public function checkUser($uid, $oauth_provider, $username,$email,$twitter_otoken,$twitter_otoken_secret)
+  if(isset($librerias[$jsSan][$secSan]) && count($librerias[$jsSan][$secSan])>0)
   {
-    if ($email != '')
-      $query = $this->getQuery("SELECT * FROM tbl_usuario WHERE (oauth_uid = '$uid' and oauth_provider = '$oauth_provider') or email = '$email'");
-    else
-      $query = $this->getQuery("SELECT * FROM tbl_usuario WHERE oauth_uid = '$uid' and oauth_provider = '$oauth_provider'");
 
-
-    if (count($query)>0)
+    for($i=0,$n=count($librerias[$jsSan][$secSan]);$i<$n;$i++)
     {
-      if ($query[0]['id']!='' && $query[0]['nombre']!='' && $query[0]['apellido']!='' && $query[0]['fecha_nacimiento']!=''
-           && $query[0]['genero']!=''  && $query[0]['estado']!=''  && $query[0]['email']!=''  && $query[0]['password']!='')
-      {
-        $query[0]['registrado'] = 1;
-        return $query;
-      }
-    }
+      if(file_exists($librerias[$jsSan][$secSan][$i]))
+       $returnJs .= '<script type="text/javascript" src="'.$url.$librerias[$jsSan][$secSan][$i].'"></script>';  
+   }
 
-    $query[0]['registrado'] = 0;
-    return $query;
+ }
+
+ print $returnJs; 
+}
+
+public function getURL()
+{
+
+        //Variables de directorios
+  $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+  $directorio = dirname($_SERVER["PHP_SELF"]);
+  $directorio =($directorio!='')?$directorio:'/';
+  $path = "http://$_SERVER[HTTP_HOST]";
+  $fullPath = $path.$directorio;
+  $fullPath = ($fullPath[strlen($fullPath)-1]=='/')?$fullPath:$fullPath.'/';
+
+  $_SESSION['fullPath'] = $fullPath;
+
+  return $fullPath;
+}
+
+public function checkUser($uid, $oauth_provider, $username,$email,$twitter_otoken,$twitter_otoken_secret)
+{
+  if ($email != '')
+    $query = $this->getQuery("SELECT * FROM tbl_usuario WHERE (oauth_uid = '$uid' and oauth_provider = '$oauth_provider') or email = '$email'");
+  else
+    $query = $this->getQuery("SELECT * FROM tbl_usuario WHERE oauth_uid = '$uid' and oauth_provider = '$oauth_provider'");
+
+
+  if (count($query)>0)
+  {
+    if ($query[0]['id']!='' && $query[0]['nombre']!='' && $query[0]['apellido']!='' && $query[0]['fecha_nacimiento']!=''
+     && $query[0]['genero']!=''  && $query[0]['estado']!=''  && $query[0]['email']!=''  && $query[0]['password']!='')
+    {
+      $query[0]['registrado'] = 1;
+      return $query;
+    }
   }
+
+  $query[0]['registrado'] = 0;
+  return $query;
+}
 
 
 /****************************************************    ADMIN    ************************************************/
 
-    public function tienePermiso($seccion)
-    {
-      if (isset($_SESSION['permisos'][$seccion]) )
-      {
-        if ($_SESSION['rol'] <= $_SESSION['permisos'][$seccion])
-          return 1;
-      }
+public function tienePermiso($seccion)
+{
+  if (isset($_SESSION['permisos'][$seccion]) )
+  {
+    if ($_SESSION['rol'] <= $_SESSION['permisos'][$seccion])
+      return 1;
+  }
 
-      return 0;
+  return 0;
 
-    }
+}
 
 
-    public function getStatus($status)
-    {
-        if($status==1)
-            return 'Activo';
-        else
-            return 'Inactivo';
-    }
+public function getStatus($status)
+{
+  if($status==1)
+    return 'Activo';
+  else
+    return 'Inactivo';
+}
 
 
     # -----------------------
     # HELPERS image
     # -----------------------
 
-    public function savePhoto(&$file,$folder)
+public function savePhoto(&$file,$folder)
+{
+
+  $filepath = '../assets/'.$folder.'/'.$file['name'];
+  $new_filename = $filepath;
+  $nameFile = $file['name'];
+
+  if (file_exists('../assets/'.$folder.'/'.$file['name']))
+  {
+    $temp = explode(".", $file['name']);
+    $fileName = '';
+
+    for($i = 0; $i < sizeof($temp) - 1; $i++)
+      $fileName .= $temp[$i];
+
+
+    for ($i = 1; $i < 100; $i++)
     {
+      if ( ! file_exists('../assets/'.$folder.'/'.$fileName.$i.'.'.$temp[sizeof($temp) - 1]))
+      {
+        $new_filename = '../assets/'.$folder.'/'.$fileName.$i.'.'.$temp[sizeof($temp) - 1];
+        $file['name'] = $fileName.$i.'.'.$temp[sizeof($temp) - 1];
+        break;
+      }
+    }
+  }
 
-        $filepath = '../assets/'.$folder.'/'.$file['name'];
-        $new_filename = $filepath;
-        $nameFile = $file['name'];
-
-        if (file_exists('../assets/'.$folder.'/'.$file['name']))
-        {
-            $temp = explode(".", $file['name']);
-            $fileName = '';
-
-            for($i = 0; $i < sizeof($temp) - 1; $i++)
-                $fileName .= $temp[$i];
-
-
-            for ($i = 1; $i < 100; $i++)
-            {
-                if ( ! file_exists('../assets/'.$folder.'/'.$fileName.$i.'.'.$temp[sizeof($temp) - 1]))
-                {
-                    $new_filename = '../assets/'.$folder.'/'.$fileName.$i.'.'.$temp[sizeof($temp) - 1];
-                    $file['name'] = $fileName.$i.'.'.$temp[sizeof($temp) - 1];
-                    break;
-                }
-            }
-        }
-
-        if (copy($file['tmp_name'],$new_filename)) {
-            $type = pathinfo($new_filename, PATHINFO_EXTENSION);
-            $data = file_get_contents($new_filename);
-            return true;
-        }
-        else
-        {
+  if (copy($file['tmp_name'],$new_filename)) {
+    $type = pathinfo($new_filename, PATHINFO_EXTENSION);
+    $data = file_get_contents($new_filename);
+    return true;
+  }
+  else
+  {
             #echo '<aside>Error al subir imagen, intente de nuevo.</aside>';
-            return false;
-        }
+    return false;
+  }
+
+}
+
+
+public function savePhotoEditor(&$file,$folder)
+{
+
+  $filepath = '../../assets/'.$folder.'/'.$file['name'];
+  $new_filename = $filepath;
+  $nameFile = $file['name'];
+
+  if (file_exists('../../assets/'.$folder.'/'.$file['name']))
+  {
+    $temp = explode(".", $file['name']);
+    $fileName = '';
+
+    for($i = 0; $i < sizeof($temp) - 1; $i++)
+      $fileName .= $temp[$i];
+
+
+    for ($i = 1; $i < 100; $i++)
+    {
+      if ( ! file_exists('../../assets/'.$folder.'/'.$fileName.$i.'.'.$temp[sizeof($temp) - 1]))
+      {
+        $new_filename = '../../assets/'.$folder.'/'.$fileName.$i.'.'.$temp[sizeof($temp) - 1];
+        $file['name'] = $fileName.$i.'.'.$temp[sizeof($temp) - 1];
+        break;
+      }
+    }
+  }
+
+  if (copy($file['tmp_name'],$new_filename)) {
+    $type = pathinfo($new_filename, PATHINFO_EXTENSION);
+    $data = file_get_contents($new_filename);
+    return true;
+  }
+  else
+  {
+            #echo '<aside>Error al subir imagen, intente de nuevo.</aside>';
+    return false;
+  }
+
+}
+
+
+public function saveMultiplePhoto(&$file,$k,$folder)
+{
+
+  $filepath = '../assets/'.$folder.'/'.$file['name'][$k];
+  $new_filename = $filepath;
+  $nameFile = $file['name'][$k];
+
+  if (file_exists('../assets/'.$folder.'/'.$file['name'][$k]))
+  {
+    $temp = explode(".", $file['name'][$k]);
+    $fileName = '';
+
+    for($i = 0; $i < sizeof($temp) - 1; $i++)
+      $fileName .= $temp[$i];
+
+
+    for ($i = 1; $i < 100; $i++)
+    {
+      if ( ! file_exists('../assets/'.$folder.'/'.$fileName.$i.'.'.$temp[sizeof($temp) - 1]))
+      {
+        $new_filename = '../assets/'.$folder.'/'.$fileName.$i.'.'.$temp[sizeof($temp) - 1];
+        $file['name'][$k] = $fileName.$i.'.'.$temp[sizeof($temp) - 1];
+        break;
+      }
 
     }
+  }
 
-
-    public function savePhotoEditor(&$file,$folder)
-    {
-
-        $filepath = '../../assets/'.$folder.'/'.$file['name'];
-        $new_filename = $filepath;
-        $nameFile = $file['name'];
-
-        if (file_exists('../../assets/'.$folder.'/'.$file['name']))
-        {
-            $temp = explode(".", $file['name']);
-            $fileName = '';
-
-            for($i = 0; $i < sizeof($temp) - 1; $i++)
-                $fileName .= $temp[$i];
-
-
-            for ($i = 1; $i < 100; $i++)
-            {
-                if ( ! file_exists('../../assets/'.$folder.'/'.$fileName.$i.'.'.$temp[sizeof($temp) - 1]))
-                {
-                    $new_filename = '../../assets/'.$folder.'/'.$fileName.$i.'.'.$temp[sizeof($temp) - 1];
-                    $file['name'] = $fileName.$i.'.'.$temp[sizeof($temp) - 1];
-                    break;
-                }
-            }
-        }
-
-        if (copy($file['tmp_name'],$new_filename)) {
-            $type = pathinfo($new_filename, PATHINFO_EXTENSION);
-            $data = file_get_contents($new_filename);
-            return true;
-        }
-        else
-        {
+  if (copy($file['tmp_name'][$k],$new_filename)) {
+    $type = pathinfo($new_filename, PATHINFO_EXTENSION);
+    $data = file_get_contents($new_filename);
+    return true;
+  }
+  else
+  {
             #echo '<aside>Error al subir imagen, intente de nuevo.</aside>';
-            return false;
-        }
-
-    }
-
-
-    public function saveMultiplePhoto(&$file,$k,$folder)
-    {
-
-        $filepath = '../assets/'.$folder.'/'.$file['name'][$k];
-        $new_filename = $filepath;
-        $nameFile = $file['name'][$k];
-
-        if (file_exists('../assets/'.$folder.'/'.$file['name'][$k]))
-        {
-            $temp = explode(".", $file['name'][$k]);
-            $fileName = '';
-
-            for($i = 0; $i < sizeof($temp) - 1; $i++)
-                $fileName .= $temp[$i];
+    return false;
+  }
+}
 
 
-            for ($i = 1; $i < 100; $i++)
-            {
-                if ( ! file_exists('../assets/'.$folder.'/'.$fileName.$i.'.'.$temp[sizeof($temp) - 1]))
-                {
-                    $new_filename = '../assets/'.$folder.'/'.$fileName.$i.'.'.$temp[sizeof($temp) - 1];
-                    $file['name'][$k] = $fileName.$i.'.'.$temp[sizeof($temp) - 1];
-                    break;
-                }
-
-            }
-        }
-
-        if (copy($file['tmp_name'][$k],$new_filename)) {
-            $type = pathinfo($new_filename, PATHINFO_EXTENSION);
-            $data = file_get_contents($new_filename);
-            return true;
-        }
-        else
-        {
-            #echo '<aside>Error al subir imagen, intente de nuevo.</aside>';
-            return false;
-        }
-    }
-
-
-    public function thumbnail($file, $name, $folder_s, $folder_d, $nw, $nh)
-    {
+public function thumbnail($file, $name, $folder_s, $folder_d, $nw, $nh)
+{
         $source = '../../assets/'.$folder_s.'/'.$file['name'];    //Source file
         $dest = '../../assets/'.$folder_d.'/'.$name;
 
@@ -274,9 +272,9 @@ class Helpers
         $posp1 = strpos($ext, 'png');
 
         if ($posp1 !== false)
-            $simg = imagecreatefrompng($source);
+          $simg = imagecreatefrompng($source);
         else
-            $simg = imagecreatefromjpeg($source);
+          $simg = imagecreatefromjpeg($source);
 
 
         $dimg = imagecreatetruecolor($nw, $nh);
@@ -293,31 +291,31 @@ class Helpers
 
         if ($w_undersized OR $h_undersized)
         {
-            $new_w = round( min($nw, $ratio * $nh) );
-            $new_h = round( min($nh, $nw / $ratio) );
-            $moveH = 0;
-            $moveW = 0;
+          $new_w = round( min($nw, $ratio * $nh) );
+          $new_h = round( min($nh, $nw / $ratio) );
+          $moveH = 0;
+          $moveW = 0;
 
-            if( $new_h < $nh)
-                $moveH = ($nh - $new_h)/2;
+          if( $new_h < $nh)
+            $moveH = ($nh - $new_h)/2;
 
-            if( $new_w < $nw)
-                $moveW = ($nw - $new_w)/2;
+          if( $new_w < $nw)
+            $moveW = ($nw - $new_w)/2;
 
-              imagecopyresampled($dimg,$simg,$moveW,$moveH,0,0,$new_w,$new_h,$w,$h);
+          imagecopyresampled($dimg,$simg,$moveW,$moveH,0,0,$new_w,$new_h,$w,$h);
         }
         else
         {
-            imagecopyresampled($dimg,$simg,0,0,0,0,$nw,$nh,$w,$h);
+          imagecopyresampled($dimg,$simg,0,0,0,0,$nw,$nh,$w,$h);
         }
 
         imagejpeg($dimg, $dest);
 
-    }
+      }
 
 
-    public function validImage($file,$w,$h)
-    {
+      public function validImage($file,$w,$h)
+      {
         $dimen1   = getimagesize($file['tmp_name']);
 
         if (count($dimen1)>0)
@@ -325,7 +323,7 @@ class Helpers
           if (isset($dimen1[0]) && isset($dimen1[1]))
           {
             if (!($dimen1[0]>=$w &&  $dimen1[1]>=$h))
-                return 0;
+              return 0;
 
           }
           else
@@ -336,10 +334,10 @@ class Helpers
 
 
         return 1;
-    }
+      }
 
-    public function validMultipleImage($file,$w,$h)
-    {
+      public function validMultipleImage($file,$w,$h)
+      {
         $dimen1   = getimagesize($file);
 
         if (count($dimen1)>0)
@@ -347,7 +345,7 @@ class Helpers
           if (isset($dimen1[0]) && isset($dimen1[1]))
           {
             if (!($dimen1[0]>=$w &&  $dimen1[1]>=$h))
-                return 0;
+              return 0;
 
           }
           else
@@ -358,34 +356,34 @@ class Helpers
 
 
         return 1;
-    }
+      }
 
 
-    /**************************************** TOOLS COMUN   ****************************************************/
+      /**************************************** TOOLS COMUN   ****************************************************/
 
 
-    public function getOptionsWhere($table,$field_name,$where)
-    {
+      public function getOptionsWhere($table,$field_name,$where)
+      {
         $options = $this->database->select($table,'*',$where);
         foreach ($options as $option)
         {
-            echo '<option value="'.$option['id'].'">'.$option[$field_name].'</option>';
+          echo '<option value="'.$option['id'].'">'.$option[$field_name].'</option>';
         }
-    }
+      }
 
 
-    public function getOptionsSelect($table,$field_name,$opt_selected)
-    {
+      public function getOptionsSelect($table,$field_name,$opt_selected)
+      {
         $options = $this->database->select($table,'*',array('status'=>1));
         foreach ($options as $option)
         {
-            $selected = '';
+          $selected = '';
 
-            if ($opt_selected == $option['id']) $selected = 'selected';
+          if ($opt_selected == $option['id']) $selected = 'selected';
 
-            echo '<option value="'.$option['id'].'" '.$selected.'>'.$option[$field_name].'</option>';
+          echo '<option value="'.$option['id'].'" '.$selected.'>'.$option[$field_name].'</option>';
         }
-    }
+      }
 
 
 
@@ -393,8 +391,8 @@ class Helpers
     # HELPERS emails
     # -----------------------
 
-    public function sentEmail($subject,$message,$to)
-    {
+      public function sentEmail($subject,$message,$to)
+      {
         $mailer = new PHPMailer();
         $mailer->IsSMTP();
         $mailer->SMTPAuth = true;
@@ -413,81 +411,81 @@ class Helpers
           $mailer->AddAddress($to[$i]);
 
         $mailer->Send();
-    }
+      }
 
 
     # -----------------------
     # HELPERS select /queries
     # -----------------------
 
-    public function getDataSanitize($prepare,$params,$tipoFetch)
-    {
-      $sth = $this->database->pdo->prepare($prepare);
-
-      for($i=0,$n=count($params);$i<$n;$i++)
+      public function getDataSanitize($prepare,$params,$tipoFetch)
       {
+        $sth = $this->database->pdo->prepare($prepare);
+
+        for($i=0,$n=count($params);$i<$n;$i++)
+        {
           if(!$sth->bindParam(':'.$params[$i]['id'], $params[$i]['content'], $params[$i]['tipo'],$params[$i]['size']))
             return false;
-      }
-      if($sth->execute()){
-        if ($tipoFetch == 'fetch')
-          $result = $sth->fetch(PDO::FETCH_ASSOC);
-        else if ($tipoFetch == 'fetchAll')
-          $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+        }
+        if($sth->execute()){
+          if ($tipoFetch == 'fetch')
+            $result = $sth->fetch(PDO::FETCH_ASSOC);
+          else if ($tipoFetch == 'fetchAll')
+            $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+          else
+            return false;
+        }
         else
           return false;
+
+
+        if($result === false)
+          return false;
+
+        return $result;
       }
-      else
-        return false;
 
 
-      if($result === false)
-        return false;
-
-      return $result;
-    }
-
-
-    public function insertDataSanitize($prepare,$params)
-    {
-      $sth = $this->database->pdo->prepare($prepare);
-
-      for($i=0,$n=count($params);$i<$n;$i++)
+      public function insertDataSanitize($prepare,$params)
       {
+        $sth = $this->database->pdo->prepare($prepare);
+
+        for($i=0,$n=count($params);$i<$n;$i++)
+        {
           if(!$sth->bindParam(':'.$params[$i]['id'], $params[$i]['content'], $params[$i]['tipo'],$params[$i]['size']))
             return 0;
+        }
+        
+        if($sth->execute() && $sth->rowCount() > 0)
+          return $this->database->pdo->lastInsertId();
+        else
+          return 0;
+
       }
-      
-      if($sth->execute() && $sth->rowCount() > 0)
-        return $this->database->pdo->lastInsertId();
-      else
-        return 0;
 
-    }
-
-    public function updateDataSanitize($prepare,$params)
-    {
-      $sth = $this->database->pdo->prepare($prepare);
-
-      for($i=0,$n=count($params);$i<$n;$i++)
+      public function updateDataSanitize($prepare,$params)
       {
+        $sth = $this->database->pdo->prepare($prepare);
+
+        for($i=0,$n=count($params);$i<$n;$i++)
+        {
           if(!$sth->bindParam(':'.$params[$i]['id'], $params[$i]['content'], $params[$i]['tipo'],$params[$i]['size']))
             return false;
+        }
+        
+        if($sth->execute())
+          return true;
+        else
+          return false;
+
       }
-      
-      if($sth->execute())
-        return true;
-      else
-        return false;
 
     }
 
-}
 
 
-
-class Facebook extends BaseFacebook
-{
+    class Facebook extends BaseFacebook
+    {
   /**
    * Identical to the parent constructor, except that
    * we start a PHP session to store the user ID and
@@ -505,7 +503,7 @@ class Facebook extends BaseFacebook
   }
 
   protected static $kSupportedKeys =
-    array('state', 'code', 'access_token', 'user_id');
+  array('state', 'code', 'access_token', 'user_id');
 
   /**
    * Provides the implementations of the inherited abstract
@@ -531,7 +529,7 @@ class Facebook extends BaseFacebook
 
     $session_var_name = $this->constructSessionVariableName($key);
     return isset($_SESSION[$session_var_name]) ?
-      $_SESSION[$session_var_name] : $default;
+    $_SESSION[$session_var_name] : $default;
   }
 
   protected function clearPersistentData($key) {
@@ -552,7 +550,7 @@ class Facebook extends BaseFacebook
 
   protected function constructSessionVariableName($key) {
     return implode('_', array('fb',
-                              $this->getAppId(),
-                              $key));
+      $this->getAppId(),
+      $key));
   }
 }

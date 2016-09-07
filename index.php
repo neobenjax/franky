@@ -1,7 +1,6 @@
 <?php
-session_set_cookie_params(1800, NULL, NULL, isset($_SERVER["HTTPS"]), TRUE);
-session_start();
-error_reporting(0);
+include_once 'includes/init.php';
+include_once $helpers->getController($pagina);
 ?>
 <!doctype html>
 <html class="no-js" lang="es" ng-app="app">
@@ -17,55 +16,42 @@ error_reporting(0);
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
 
-
         <?php
-        include_once 'commons/helpers.php';
 
-        $helpers = new Helpers();
-
-        //Variables de navegacion
-        $pagina = (isset($_GET['pagina']))?htmlspecialchars($_GET['pagina'], ENT_QUOTES, 'UTF-8'):'index';
-        $subpagina = (isset($_GET['subpagina']))?htmlspecialchars($_GET['subpagina'], ENT_QUOTES, 'UTF-8'):'default';
-        $categoria = (isset($_GET['categoria']))?htmlspecialchars($_GET['categoria'], ENT_QUOTES, 'UTF-8'):'default';
-        $producto = (isset($_GET['producto']))?htmlspecialchars($_GET['producto'], ENT_QUOTES, 'UTF-8'):'default';
-
-        //Variables de directorios
-        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        $directorio = dirname($_SERVER["PHP_SELF"]);
-        $directorio =($directorio!='')?$directorio:'/';
-        $path = "http://$_SERVER[HTTP_HOST]";
-        $fullPath = $path.$directorio;
-        $fullPath = ($fullPath[strlen($fullPath)-1]=='/')?$fullPath:$fullPath.'/';
-        
-        $_SESSION['fullPath'] = $fullPath;       
-
-
-
-        if ($actual_link == 'https://dominiofinal.ext/' || $actual_link == 'https://dominiofinal.ext')
+        if ($actual_link == 'https://cambiar.mx/' || $actual_link == 'https://www.cambiar.mx')
         {
 
            header("HTTP/1.1 301 Moved Permanently");
-           header('Location: https://www.dominiofinal.mx/');
+           header('Location: https://www.cambiar.mx/home/index');
         }
 
-        include_once $helpers->getController($pagina);
+        if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1800)) {
+            // last request was more than 30 minutes ago
+            session_unset();     // unset $_SESSION variable for the run-time
+            session_destroy();   // destroy session data in storage
+        }
+        
+        $_SESSION['LAST_ACTIVITY'] = time();
+
+
+        
+        include_once 'includes/seo.php';
+
+        include 'includes/librerias_js_css.php';
 
         ?>
-        
-        <title>Franky</title>
-        <meta name="description" content="">
-        <meta name="keywords" content="">
-
-
-        <?php include 'includes/head_includes.php'; ?>
     </head>
     <body ng-controller="ctrlMain">
+        <?php 
+        //GTM-DATALAYERS-FACEBOOK
+        include_once 'includes/analytics.php'; 
+        ?>
 
         <?php
-            //Variables de reasignación para home_marca/categoria/nombre-de-producto
-            if(4==5){
-          ?>
-          <div>
+        //Variables de reasignación para home_marca/categoria/nombre-de-producto
+        if(4==4){
+        ?>
+        <div>
             <span class="green">Link Actual: <?php echo $actual_link; ?></span>
             <br>
             <span class="green">Página: <?php echo $pagina; ?></span>
@@ -75,32 +61,30 @@ error_reporting(0);
             <span class="green">Categoria: <?php echo $categoria; ?></span>
             <br>
             <span class="green">Producto: <?php echo $producto; ?></span>
-            <br>
-            <span class="green">id_producto: <?php echo $id_producto; ?></span>
-            <br>
-            <span class="green">Nombre Producto: <?php echo $nombre_producto; ?></span>
-          </div>
-          <?php
-            }
-          ?>
+        </div>
+        <?php
+        }
+        ?>
 
         <div class="contenedorAll">
             <div class="desplazamiento">
-
                   <?php
-                      # Menu
-                      include_once 'includes/header_nav.php';
-                      # Contenido
-
-                      include_once $helpers->getView($pagina);
-                  ?>
-
-                <?php
-
+                    # Menu
+                    include_once 'includes/header_nav.php';
+                    # Contenido
+                    include_once $helpers->getView($pagina);
                     # Footer
                     include_once 'includes/footer.php';
                 ?>
             </div><!--Fin Contenedor para desplazamiento en MOVIL -->
         </div>
+
+
+        <?php 
+            //Librerias para el footer
+            if(isset($libreriasFooter))
+                $helpers->getJs($libreriasFooter,$pagina,$subpagina);
+        ?>
+
     </body>
 </html>
