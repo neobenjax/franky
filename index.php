@@ -1,6 +1,7 @@
 <?php
 include_once 'includes/error_security.php';
 include_once 'includes/init.php';
+include_once $helpers->getController($pagina);
 ?>
 <!doctype html>
 <html class="no-js" lang="es" ng-app="app">

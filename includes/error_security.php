@@ -30,7 +30,6 @@ session_start();
 ini_set('display_errors', 1);
 */
 require_once('commons/PhpConsole/__autoload.php');
-// Call debug from PhpConsole\Handler
 $debugPassword = 'c0d1c32375';
 $connector = PhpConsole\Connector::getInstance();
 $connector->setPassword($debugPassword);
