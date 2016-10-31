@@ -19,6 +19,6 @@ $handler->debug($subpagina, 'SubPagina');
 $handler->debug($categoria, 'Categoria');
 $handler->debug($producto, 'Producto');
 
-$helpers->getController($pagina);
+
 
 ?>
