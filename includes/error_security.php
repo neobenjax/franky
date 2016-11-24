@@ -9,7 +9,7 @@ if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO
   $_SERVER['HTTPS'] = 'on';
 
 //Redireccion a HTTPS cuando no es localhost o dominios sin soporte a https
-if((!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "") && $_SERVER['SERVER_NAME']!='localhost' && $_SERVER['SERVER_NAME']!='127.0.0.1'){
+if((!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "") && $_SERVER['SERVER_NAME']!='localhost' && $_SERVER['SERVER_NAME']!='127.0.0.1' && $_SERVER['SERVER_NAME']!='proyectosphp.codice.com'){
   
      $redirect = "https://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
      header("HTTP/1.1 301 Moved Permanently");
