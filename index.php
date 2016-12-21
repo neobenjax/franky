@@ -1,6 +1,16 @@
 <?php
+$time_to_load = microtime();
+$time_to_load = explode(' ', $time_to_load);
+$time_to_load = $time_to_load[1] + $time_to_load[0];
+$start = $time_to_load;
+
+#constantes de configuracion de ambiente
+include_once 'commons/config.php';
+#redireccion https y manejo de errores
 include_once 'includes/error_security.php';
+#inclusión de helper y variables de GET (navegacion - flujo del sitio)
 include_once 'includes/init.php';
+
 include_once $helpers->getController($pagina);
 ?>
 <!doctype html>
@@ -35,9 +45,10 @@ include_once $helpers->getController($pagina);
         $_SESSION['LAST_ACTIVITY'] = time();
 
 
-        
+        #tags para seo y metas
         include_once 'includes/seo.php';
 
+        #inclusión de js, css y variables javascript a php
         include 'includes/librerias_js_css.php';
 
         ?>
@@ -66,6 +77,16 @@ include_once $helpers->getController($pagina);
             //Librerias para el footer
             if(isset($libreriasFooter))
                 $helpers->getJs($libreriasFooter,$pagina,$subpagina);
+
+
+$time_to_load = microtime();
+$time_to_load = explode(' ', $time_to_load);
+$time_to_load = $time_to_load[1] + $time_to_load[0];
+$finish = $time_to_load;
+$total_time = round(($finish - $start), 4);
+$handler->debug($total_time.' seconds.', 'Tiempo de carga del sitio:');
+echo $total_time;
+
         ?>
 
     </body>

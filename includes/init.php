@@ -13,12 +13,9 @@ $categoria = (isset($_GET['categoria']))?htmlspecialchars($_GET['categoria'], EN
 $producto = (isset($_GET['producto']))?htmlspecialchars($_GET['producto'], ENT_QUOTES, 'UTF-8'):'default';
 $actual_link = "https://$_SERVER[SERVER_NAME]$_SERVER[REQUEST_URI]";
 
+$handler->debug(ENVIRONMENT,'Tu estás en:');
 $handler->debug($actual_link, 'Link Actual');
 $handler->debug($pagina, 'Pagina');
 $handler->debug($subpagina, 'SubPagina');
 $handler->debug($categoria, 'Categoria');
 $handler->debug($producto, 'Producto');
-
-
-
-?>

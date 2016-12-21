@@ -12,15 +12,18 @@ class Helpers
 
  public function __construct()
  {
+  if(defined(DATABASE_NAME) && DATABASE_NAME!='' && defined(SERVER) && SERVER!='' && defined(USERNAME) && USERNAME!='' && defined(PASSWORD) && PASSWORD!=''){
 
-  $this->database = new medoo(array(
-   'database_type' => 'mysql',
-   'database_name' => DATABASE_NAME,
-   'server' => SERVER,
-   'username' => USERNAME,
-   'password' => PASSWORD,
-   'charset' => 'utf8'
-   ));
+    $this->database = new medoo(array(
+     'database_type' => 'mysql',
+     'database_name' => DATABASE_NAME,
+     'server' => SERVER,
+     'username' => USERNAME,
+     'password' => PASSWORD,
+     'charset' => 'utf8'
+     ));
+
+  }
 
 }
 

@@ -6,6 +6,11 @@ RewriteEngine On
 #RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
 
+RewriteCond %{HTTP_HOST} ^dominio.com$
+RewriteCond %{HTTP_HOST} !^www\.
+RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+
 RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [OR]
 
 RewriteCond %{QUERY_STRING} .*script.* [NC,OR]
