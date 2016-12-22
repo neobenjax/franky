@@ -79,14 +79,12 @@ include_once $helpers->getController($pagina);
                 $helpers->getJs($libreriasFooter,$pagina,$subpagina);
 
 
-$time_to_load = microtime();
-$time_to_load = explode(' ', $time_to_load);
-$time_to_load = $time_to_load[1] + $time_to_load[0];
-$finish = $time_to_load;
-$total_time = round(($finish - $start), 4);
-$handler->debug($total_time.' seconds.', 'Tiempo de carga del sitio:');
-echo $total_time;
-
+            $time_to_load = microtime();
+            $time_to_load = explode(' ', $time_to_load);
+            $time_to_load = $time_to_load[1] + $time_to_load[0];
+            $finish = $time_to_load;
+            $total_time = round(($finish - $start), 4);
+            $handler->debug($total_time.' seconds.', 'Tiempo de carga del sitio:');
         ?>
 
     </body>

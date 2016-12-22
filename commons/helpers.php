@@ -5,14 +5,19 @@ include_once 'medoo.php';
 include_once 'base_facebook.php';
 
 
+
 class Helpers
 {
 
  public $database;
+ public $handlerHelper;
 
  public function __construct()
  {
-  if(defined(DATABASE_NAME) && DATABASE_NAME!='' && defined(SERVER) && SERVER!='' && defined(USERNAME) && USERNAME!='' && defined(PASSWORD) && PASSWORD!=''){
+
+  $this->handlerHelper = PhpConsole\Handler::getInstance();
+  
+  if(defined('DATABASE_NAME') && DATABASE_NAME!='' && defined('SERVER') && SERVER!='' && defined('USERNAME') && USERNAME!='' && defined('PASSWORD') && PASSWORD!=''){
 
     $this->database = new medoo(array(
      'database_type' => 'mysql',
@@ -25,6 +30,10 @@ class Helpers
 
   }
 
+}
+
+public function getDBInfo(){
+  return $this->database->info();
 }
 
    # ---------------
@@ -426,8 +435,10 @@ public function thumbnail($file, $name, $folder_s, $folder_d, $nw, $nh)
     # HELPERS select /queries
     # -----------------------
 
-      public function getDataSanitize($prepare,$params,$tipoFetch)
+      public function getDataSanitize($prepare,$params,$tipoFetch,$console)
       {
+        $startquerytime = microtime(true);
+
         $sth = $this->database->pdo->prepare($prepare);
 
         for($i=0,$n=count($params);$i<$n;$i++)
@@ -450,12 +461,23 @@ public function thumbnail($file, $name, $folder_s, $folder_d, $nw, $nh)
         if($result === false)
           return false;
 
+        $endquerytime = microtime(true);
+        $durationqry = $endquerytime - $startquerytime;
+
+        if($console){
+          $this->handlerHelper->debug($prepare, 'Prepare Qry:');
+          $this->handlerHelper->debug($params, 'Params:');
+          $this->handlerHelper->debug($durationqry, 'Tiempo consulta select (ms)');
+        }
+
         return $result;
       }
 
 
-      public function insertDataSanitize($prepare,$params)
+      public function insertDataSanitize($prepare,$params,$console)
       {
+        $startquerytime = microtime(true);
+
         $sth = $this->database->pdo->prepare($prepare);
 
         for($i=0,$n=count($params);$i<$n;$i++)
@@ -464,15 +486,29 @@ public function thumbnail($file, $name, $folder_s, $folder_d, $nw, $nh)
             return 0;
         }
         
-        if($sth->execute() && $sth->rowCount() > 0)
+        if($sth->execute() && $sth->rowCount() > 0){
+          
+          $endquerytime = microtime(true);
+          $durationqry = $endquerytime - $startquerytime;
+
+          if($console){
+            $this->handlerHelper->debug($prepare, 'Prepare Qry:');
+            $this->handlerHelper->debug($params, 'Params:');
+            $this->handlerHelper->debug($durationqry, 'Tiempo consulta Insert (ms)');
+          }
+
           return $this->database->pdo->lastInsertId();
+        }
         else
           return 0;
 
+
       }
 
-      public function updateDataSanitize($prepare,$params)
+      public function updateDataSanitize($prepare,$params,$console)
       {
+        $startquerytime = microtime(true);
+
         $sth = $this->database->pdo->prepare($prepare);
 
         for($i=0,$n=count($params);$i<$n;$i++)
@@ -481,10 +517,22 @@ public function thumbnail($file, $name, $folder_s, $folder_d, $nw, $nh)
             return false;
         }
         
-        if($sth->execute())
+        if($sth->execute()){
+          
+          $endquerytime = microtime(true);
+          $durationqry = $endquerytime - $startquerytime;
+
+          if($console){
+            $this->handlerHelper->debug($prepare, 'Prepare Qry:');
+            $this->handlerHelper->debug($params, 'Params:');
+            $this->handlerHelper->debug($durationqry, 'Tiempo consulta Update (ms)');
+          }
+
           return true;
+        }
         else
           return false;
+
 
       }
 
