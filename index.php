@@ -6,7 +6,7 @@ $start = $time_to_load;
 
 #constantes de configuracion de ambiente
 include_once 'commons/config.php';
-#redireccion https y manejo de errores
+#redireccion https y manejo de errores, integracion git (leer ultimo commit)
 include_once 'includes/error_security.php';
 #inclusión de helper y variables de GET (navegacion - flujo del sitio)
 include_once 'includes/init.php';

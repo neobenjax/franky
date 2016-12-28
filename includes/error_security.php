@@ -42,3 +42,16 @@ $handler->start();
 /*
 ** FIN MANEJO DE ERRORES
 */
+
+/*
+** GIT INTEGRATION
+*/
+require_once('commons/client/GitHubClient.php');
+$owner = 'neobenjax';
+$repo = 'franky';
+$client = new GitHubClient();
+$client->setPage();
+$client->setPageSize(1);
+/*
+** FIN GIT INTEGRATION
+*/

@@ -19,3 +19,8 @@ $handler->debug($pagina, 'Pagina');
 $handler->debug($subpagina, 'SubPagina');
 $handler->debug($categoria, 'Categoria');
 $handler->debug($producto, 'Producto');
+
+$commits = $client->repos->commits->listCommitsOnRepository($owner, $repo);
+$last_commit=$commits[count($commits)-1];
+$handler->debug($last_commit->getSha(), 'Git Sha:');
+$handler->debug($last_commit->getCommit()->getMessage(), 'Git Último Commit:');
