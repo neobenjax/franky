@@ -3,6 +3,7 @@ require 'conn.php';
 require 'class.phpmailer.php';
 include_once 'medoo.php';
 include_once 'base_facebook.php';
+include_once 'PhpConsole/__autoload.php';
 
 
 
@@ -94,7 +95,7 @@ public function getURL()
   $fullPath = $path.$directorio;
   $fullPath = ($fullPath[strlen($fullPath)-1]=='/')?$fullPath:$fullPath.'/';
 
-  $_SESSION['fullPath'] = $fullPath;
+  $_SESSION['baseURL'] = $fullPath;
 
   return $fullPath;
 }
@@ -534,6 +535,10 @@ public function thumbnail($file, $name, $folder_s, $folder_d, $nw, $nh)
           return false;
 
 
+      }
+
+      public function getTestData(){
+        return "Pollo";
       }
 
     }

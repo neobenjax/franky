@@ -1,6 +1,6 @@
 <?php
 
-if (ENVIRONMENT=='development')
+if ($_SESSION['ENVIRONMENT']=='development')
 {
 	# CONSTANTES DE CONEXIÓN DEV
 	define('DATABASE_NAME','');
@@ -8,7 +8,7 @@ if (ENVIRONMENT=='development')
 	define('USERNAME','');
 	define('PASSWORD','');
 }
-elseif (ENVIRONMENT=='production')
+elseif ($_SESSION['ENVIRONMENT']=='production')
 {
 	# CONSTANTES DE CONEXIÓN PROD
 	define('USERNAME','');

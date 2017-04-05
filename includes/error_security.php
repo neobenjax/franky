@@ -17,13 +17,6 @@ if((!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "") && ENVIRONMENT == 'pro
      header("Location: $redirect");
      exit();
 }
-
-//Cookies seguras
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "" && ENVIRONMENT == 'production')
-  session_set_cookie_params(0, NULL, NULL, isset($_SERVER["HTTPS"]), TRUE);
-
-
-session_start();
 /*
 ** MANEJO DE ERRORES
 ** INSTALAR EXTENSION DE CHROME "PHP CONSOLE Y USAR EL PASSWORD PARA DESBLOQUEAR EL DEBUGGING"
@@ -31,7 +24,7 @@ session_start();
 /*error_reporting(E_ALL);
 ini_set('display_errors', 1);*/
 
-require_once('commons/PhpConsole/__autoload.php');
+require_once('/commons/PhpConsole/__autoload.php');
 $debugPassword = 'c0d1c32375';
 $connector = PhpConsole\Connector::getInstance();
 $connector->setPassword($debugPassword);

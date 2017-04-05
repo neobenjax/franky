@@ -20,3 +20,10 @@ elseif ($_SERVER['SERVER_NAME']=='XXX.XXX.XXX.XX')
     define('YOUR_CONSUMER_SECRET', '');
     define('ENVIRONMENT','production');
 }
+
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "" && ENVIRONMENT == 'production')
+  session_set_cookie_params(0, NULL, NULL, isset($_SERVER["HTTPS"]), TRUE);
+
+session_start();
+
+$_SESSION['ENVIRONMENT'] = ENVIRONMENT;

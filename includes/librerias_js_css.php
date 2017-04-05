@@ -39,6 +39,8 @@
 	$librerias['nombre-de-pagina']['default'][0] = 'assets/js/app/nombre-de-pagina.js';
 	$libreriasFooter['nombre-de-pagina']['default'][0] = 'assets/js/app/nombre-de-pagina-footer.js';
 
+    $libreriasFooter['index']['default'][0] = 'assets/js/app/index-footer.js';
+
 	$contenido = (is_numeric($subpagina)) ? 'default' : $subpagina;
     $helpers->getJs($librerias,$pagina,$contenido);
 ?>
