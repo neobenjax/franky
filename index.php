@@ -1,5 +1,4 @@
 <?php
-//Cookies seguras
 $time_to_load = microtime();
 $time_to_load = explode(' ', $time_to_load);
 $time_to_load = $time_to_load[1] + $time_to_load[0];

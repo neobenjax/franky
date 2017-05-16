@@ -11,7 +11,8 @@ $pagina = (isset($_GET['pagina']))?htmlspecialchars($_GET['pagina'], ENT_QUOTES,
 $subpagina = (isset($_GET['subpagina']))?htmlspecialchars($_GET['subpagina'], ENT_QUOTES, 'UTF-8'):'default';
 $categoria = (isset($_GET['categoria']))?htmlspecialchars($_GET['categoria'], ENT_QUOTES, 'UTF-8'):'default';
 $producto = (isset($_GET['producto']))?htmlspecialchars($_GET['producto'], ENT_QUOTES, 'UTF-8'):'default';
-$actual_link = "https://$_SERVER[SERVER_NAME]$_SERVER[REQUEST_URI]";
+$http = (isset($_SERVER['HTTPS'])) ? 'https' : 'http';
+$actual_link = "$http://$_SERVER[SERVER_NAME]$_SERVER[REQUEST_URI]";
 
 $handler->debug($_SESSION['ENVIRONMENT'],'Tu estás en:');
 $handler->debug($actual_link, 'Link Actual');

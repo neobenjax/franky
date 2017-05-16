@@ -24,7 +24,7 @@ if((!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "") && ENVIRONMENT == 'pro
 /*error_reporting(E_ALL);
 ini_set('display_errors', 1);*/
 
-require_once('/commons/PhpConsole/__autoload.php');
+require_once('commons/PhpConsole/__autoload.php');
 $debugPassword = 'c0d1c32375';
 $connector = PhpConsole\Connector::getInstance();
 $connector->setPassword($debugPassword);
